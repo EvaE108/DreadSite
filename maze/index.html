@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Maze</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: monospace;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background-color: black;
+    }
+    #timer {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 24px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="timer">60</div>
+  <canvas id="maze" width="700" height="700"></canvas>
+  <script>
+    const canvas = document.getElementById("maze");
+    const ctx = canvas.getContext("2d");
+
+    const cols = 21;
+    const rows = 21;
+    const size = canvas.width / cols;
+
+    // Real, handcrafted maze (1 = wall, 0 = path)
+    const maze = [
+      "111111111111111111111",
+      "100000000010000000001",
+      "101111111010111111101",
+      "101000001010000100001",
+      "101011101011111101111",
+      "101000101000001000001",
+      "101110101111101111101",
+      "100010100000101000001",
+      "111110111110101011111",
+      "100000000000101000001",
+      "101111111111101011111",
+      "101000000000001000001",
+      "101011111111111111101",
+      "100000000000000000001",
+      "111111011111111011101",
+      "100000000100000000001",
+      "101111111101111111111",
+      "100000000001000000001",
+      "111111111101111111101",
+      "100000000000000000001",
+      "111111111111111111111",
+    ].map(row => row.split('').map(Number));
+
+    let player = {
+      x: 1,
+      y: 1,
+      px: 1,
+      py: 1,
+      tx: 1,
+      ty: 1,
+      speed: 6 // pixels per frame
+    };
+
+    const letters = ["R", "U", "N", "N", "E", "R"].map(char => {
+      let x, y;
+      do {
+        x = Math.floor(Math.random() * cols);
+        y = Math.floor(Math.random() * rows);
+      } while (maze[y][x] !== 0 || (x === 1 && y === 1));
+      return { char, found: false, x, y };
+    });
+
+    let timeLeft = 60;
+    const timer = document.getElementById("timer");
+    timer.textContent = timeLeft;
+
+    setInterval(() => {
+      timeLeft--;
+      if (timeLeft <= 0) {
+        resetGame();
+      }
+      timer.textContent = timeLeft;
+    }, 1000);
+
+    function drawMaze() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (maze[y][x] === 1) {
+            ctx.fillStyle = "red";
+            ctx.fillRect(x * size, y * size, size, size);
+          }
+        }
+      }
+
+      letters.forEach(l => {
+        if (l.found) {
+          ctx.fillStyle = "white";
+          ctx.font = `${size - 4}px monospace`;
+          ctx.fillText(l.char, l.x * size + 3, l.y * size + size - 6);
+        }
+      });
+
+      ctx.beginPath();
+      ctx.fillStyle = "white";
+      ctx.arc(player.px * size + size / 2, player.py * size + size / 2, size / 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function updatePlayer() {
+      let dx = player.tx - player.px;
+      let dy = player.ty - player.py;
+
+      if (Math.abs(dx) < 0.01 && Math.abs(dy) < 0.01) {
+        player.px = player.tx;
+        player.py = player.ty;
+        return;
+      }
+
+      if (dx !== 0) player.px += Math.sign(dx) * 1 / player.speed;
+      if (dy !== 0) player.py += Math.sign(dy) * 1 / player.speed;
+    }
+
+    function move(dx, dy) {
+      const nx = player.tx + dx;
+      const ny = player.ty + dy;
+      if (nx >= 0 && ny >= 0 && nx < cols && ny < rows && maze[ny][nx] === 0) {
+        player.tx = nx;
+        player.ty = ny;
+      }
+    }
+
+    function checkLetters() {
+      letters.forEach(letter => {
+        if (!letter.found && Math.round(player.tx) === letter.x && Math.round(player.ty) === letter.y) {
+          letter.found = true;
+        }
+      });
+    }
+    <!-- Ok fine if you've searched this hard I'll throw you a bone. The answer is a person -->
+
+    window.addEventListener("keydown", e => {
+      if (player.px !== player.tx || player.py !== player.ty) return;
+      switch (e.key) {
+        case "ArrowUp": move(0, -1); break;
+        case "ArrowDown": move(0, 1); break;
+        case "ArrowLeft": move(-1, 0); break;
+        case "ArrowRight": move(1, 0); break;
+      }
+    });
+
+    function resetGame() {
+      player.x = player.px = player.tx = 1;
+      player.y = player.py = player.ty = 1;
+      timeLeft = 60;
+      letters.forEach(l => {
+        let x, y;
+        do {
+          x = Math.floor(Math.random() * cols);
+          y = Math.floor(Math.random() * rows);
+        } while (maze[y][x] !== 0);
+        l.x = x;
+        l.y = y;
+        l.found = false;
+      });
+    }
+
+    function gameLoop() {
+      updatePlayer();
+      checkLetters();
+      drawMaze();
+      requestAnimationFrame(gameLoop);
+    }
+
+    gameLoop();
+  </script>
+</body>
+</html>
