@@ -36,7 +36,7 @@
     const rows = 21;
     const size = canvas.width / cols;
 
-    // Real, handcrafted maze (1 = wall, 0 = path)
+    // Maze (1 = wall, 0 = path)
     const maze = [
       "111111111111111111111",
       "100000000010000000001",
@@ -185,5 +185,41 @@
 
     gameLoop();
   </script>
+  <!-- Password encoding -->
+      <script>
+          const EXPECTED_HASH = 4196251132;   
+          const NEXT_PAGE = "puzzlepuzzle/index.html";  
+        
+         
+          function normalize(text) {
+            return text.trim().toLowerCase();
+          }
+        
+         
+          function simpleHash(str) {
+            let hash = 5381;
+            for (let i = 0; i < str.length; i++) {
+              hash = ((hash << 5) + hash) + str.charCodeAt(i);
+            }
+           
+            return hash >>> 0;
+          }
+        
+          const form = document.getElementById("answer-form");
+          const input = document.getElementById("answer-input");
+          const feedback = document.getElementById("answer-feedback");
+        
+          form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const value = normalize(input.value);
+            const hash = simpleHash(value);
+        
+            if (hash === EXPECTED_HASH) {
+              window.location.href = NEXT_PAGE;
+            } else {
+              feedback.textContent = "Incorrect. Try again.";
+            }
+          });
+    </script>       
 </body>
 </html>
