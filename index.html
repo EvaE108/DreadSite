@@ -26,49 +26,42 @@
           }
       
    
-       .answer-container {
-            position: fixed;
-            left: 50%;
-            bottom: 30px;      
-            transform: translateX(-50%);
-            width: auto;
-            z-index: 9999;       
+          .answer-container {
+            margin-top: 3rem;     /* space after the last text/image */
+            margin-bottom: 3rem;  /* space before the bottom of the page */
             text-align: center;
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 6px;              
+          }
+          
+          .answer-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: red;
+            letter-spacing: 0.12em;
+          }
+          
+          .answer-container input[type="text"] {
+            background-color: black;
+            color: red;
+            border: 1px solid red;
+            padding: 0.5rem 1rem;
+            min-width: 220px;
+          }
+          
+          .answer-container button {
+            background-color: red;
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+          }
+          
+          .answer-feedback {
+            margin-top: 0.5rem;
+            color: red;
+            min-height: 1.2em;
           }
 
-
-      .answer-container label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: red;
-        letter-spacing: 0.12em;
-      }
-      
-      .answer-container input[type="text"] {
-        background-color: black;
-        color: red;
-        border: 1px solid red;
-        padding: 0.5rem 1rem;
-        min-width: 220px;
-      }
-      
-      .answer-container button {
-        background-color: red;
-        color: black;
-        border: none;
-        padding: 0.5rem 1rem;
-        margin-left: 0.5rem;
-        cursor: pointer;
-      }
-      
-      .answer-feedback {
-        margin-top: 0.5rem;
-        color: red;
-        min-height: 1.2em;
-      }
 
       </style>
  </head>
