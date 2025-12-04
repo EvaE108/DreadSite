@@ -3,6 +3,8 @@
  <head>
   <title>Welcome</title>
       <style>
+       
+      
         body {
             background-color: black;
             color: white;
@@ -22,6 +24,46 @@
             line-height: 1.6;
             font-size: 1.2rem;
           }
+      
+   
+       .answer-container {
+           position: fixed;
+           bottom: 2rem;
+           left: 50%;
+           transform: translateX(-50%);
+           text-align: center;
+         }
+
+      .answer-container label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: red;
+        letter-spacing: 0.12em;
+      }
+      
+      .answer-container input[type="text"] {
+        background-color: black;
+        color: red;
+        border: 1px solid red;
+        padding: 0.5rem 1rem;
+        min-width: 220px;
+      }
+      
+      .answer-container button {
+        background-color: red;
+        color: black;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-left: 0.5rem;
+        cursor: pointer;
+      }
+      
+      .answer-feedback {
+        margin-top: 0.5rem;
+        color: red;
+        min-height: 1.2em;
+      }
+
       </style>
  </head>
       
@@ -37,11 +79,66 @@
            Think like me. Be my guest.</p>
       
         <p>So to begin your quest and pass my trials like no one else,<br>
-           You must first find the <strong>darkness</strong> in yourself.</p>
+           You must first find the <strong>darkness</strong> in yourself.<br><br><br></p>
+
+         <div id="x"></div>
       
         <script>
         const x = atob("Y291bnRpbmc=");
         document.getElementById("x").innerText = x;
         </script>
+
+       <!-- Password box code -->
+       <div class="answer-container">
+          <form id="answer-form">
+            <label for="answer-input">ENTER CODE TO CONTINUE</label>
+            <input
+              type="text"
+              id="answer-input"
+              name="answer"
+              autocomplete="off"
+            />
+            <button type="submit">OK</button>
+          </form>
+          <p id="answer-feedback" class="answer-feedback"></p>
+      </div>
+
+      <!-- Password encoding -->
+      <script>
+          const EXPECTED_HASH = 1385985772;   
+          const NEXT_PAGE = "counting/index.html";  
+        
+         
+          function normalize(text) {
+            return text.trim().toLowerCase();
+          }
+        
+         
+          function simpleHash(str) {
+            let hash = 5381;
+            for (let i = 0; i < str.length; i++) {
+              hash = ((hash << 5) + hash) + str.charCodeAt(i);
+            }
+           
+            return hash >>> 0;
+          }
+        
+          const form = document.getElementById("answer-form");
+          const input = document.getElementById("answer-input");
+          const feedback = document.getElementById("answer-feedback");
+        
+          form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const value = normalize(input.value);
+            const hash = simpleHash(value);
+        
+            if (hash === EXPECTED_HASH) {
+              window.location.href = NEXT_PAGE;
+            } else {
+              feedback.textContent = "Incorrect. Try again.";
+            }
+          });
+        </script>       
+       
       </body>
 </html>
