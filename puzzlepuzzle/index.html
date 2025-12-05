@@ -28,20 +28,42 @@
       cursor: grab;
     }
 
-    input[type="text"] {
-      background-color: black;
-      color: red;
-      border: 1px solid red;
-      padding: 10px;
-      font-size: 1.2rem;
-      font-family: 'Courier New', monospace;
-      width: 200px;
-    }
+     .answer-container {
+            margin-top: 3rem;    
+            margin-bottom: 3rem;  
+            text-align: center;
+          }
+          
+          .answer-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: red;
+            letter-spacing: 0.12em;
+          }
+          
+          .answer-container input[type="text"] {
+            background-color: black;
+            color: red;
+            border: 1px solid red;
+            padding: 0.5rem 1rem;
+            min-width: 220px;
+          }
+          
+          .answer-container button {
+            background-color: red;
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+          }
+          
+          .answer-feedback {
+            margin-top: 0.5rem;
+            color: red;
+            min-height: 1.2em;
+          }
 
-    #result {
-      margin-top: 1rem;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
