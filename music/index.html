@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Music</title>
+  <style>
+    body {
+      background-color: black;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 0 20px red;
+    }
+
+    
+    input[type="text"] {
+      background-color: black;
+      color: red;
+      border: 1px solid red;
+      padding: 10px;
+      font-size: 1.2rem;
+      font-family: 'Courier New', monospace;
+      width: 200px;
+    }
+
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <img src="/Puzzle-Site-Mess-Around/thomas/musicpuzzle.png" alt="Music Puzzle">
+
+  <!-- Password box code -->
+       <div class="answer-container">
+          <form id="answer-form">
+            <label for="answer-input">ENTER CODE TO CONTINUE</label>
+            <input
+              type="text"
+              id="answer-input"
+              name="answer"
+              autocomplete="off"
+            />
+            <button type="submit">OK</button>
+          </form>
+          <p id="answer-feedback" class="answer-feedback"></p>
+      </div>
+
+      <!-- Password encoding -->
+      <script>
+          const EXPECTED_HASH = 2090540097;   
+          const NEXT_PAGE = "../puzzlepuzzle/index.html";  
+        
+         
+          function normalize(text) {
+            return text.trim().toLowerCase();
+          }
+        
+         
+          function simpleHash(str) {
+            let hash = 5381;
+            for (let i = 0; i < str.length; i++) {
+              hash = ((hash << 5) + hash) + str.charCodeAt(i);
+            }
+           
+            return hash >>> 0;
+          }
+        
+          const form = document.getElementById("answer-form");
+          const input = document.getElementById("answer-input");
+          const feedback = document.getElementById("answer-feedback");
+        
+          form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const value = normalize(input.value);
+            const hash = simpleHash(value);
+        
+            if (hash === EXPECTED_HASH) {
+              window.location.href = NEXT_PAGE;
+            } else {
+              feedback.textContent = "Incorrect. Try again.";
+            }
+          });
+        </script>       
+</body>
+</html>
+
