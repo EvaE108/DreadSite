@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Puzzle Puzzle</title>
+  <style>
+    body {
+        background: black;
+        margin: 0;
+        overflow-y: auto; 
+        overflow-x: hidden; 
+      }
+
+    #puzzle-container {
+      width: 960px; 
+      height: 720px;
+      position: relative;
+      margin: 50px auto;
+      background: #111;
+      border: 2px solid white;
+    }
+
+    .piece {
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      user-select: none;
+      touch-action: none;
+      cursor: grab;
+    }
+
+    input[type="text"] {
+      background-color: black;
+      color: red;
+      border: 1px solid red;
+      padding: 10px;
+      font-size: 1.2rem;
+      font-family: 'Courier New', monospace;
+      width: 200px;
+    }
+
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="puzzle-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+  <script>
+    const container = document.getElementById('puzzle-container');
+    const rows = 3, cols = 4;
+    const pieceSize = 240;
+
+    for (let i = 0; i < rows * cols; i++) {
+      const img = document.createElement('img');
+      img.src = `piece_${i + 1}.png`;
+      img.classList.add('piece');
+      img.dataset.index = i;
+      
+      
+      img.style.left = `${Math.random() * (container.clientWidth - pieceSize)}px`;
+      img.style.top = `${Math.random() * (container.clientHeight - pieceSize)}px`;
+      
+      container.appendChild(img);
+    }
+
+    interact('.piece').draggable({
+      listeners: {
+        move (event) {
+          const target = event.target;
+          const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+          const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+          target.style.transform = `translate(${x}px, ${y}px)`;
+          target.setAttribute('data-x', x);
+          target.setAttribute('data-y', y);
+        },
+        end (event) {
+          const target = event.target;
+          const index = parseInt(target.dataset.index);
+          const correctX = (index % cols) * pieceSize;
+          const correctY = Math.floor(index / cols) * pieceSize;
+          
+          const currentX = parseFloat(target.getAttribute('data-x')) || 0;
+          const currentY = parseFloat(target.getAttribute('data-y')) || 0;
+          const snapThreshold = 30;
+
+          if (Math.abs(currentX + parseFloat(target.style.left) - correctX) < snapThreshold &&
+              Math.abs(currentY + parseFloat(target.style.top) - correctY) < snapThreshold) {
+            target.style.left = `${correctX}px`;
+            target.style.top = `${correctY}px`;
+            target.style.transform = `translate(0, 0)`;
+            target.setAttribute('data-x', 0);
+            target.setAttribute('data-y', 0);
+          }
+        }
+      },
+      inertia: true
+    });
+  </script>
+
+   <!-- Password box code -->
+       <div class="answer-container">
+          <form id="answer-form">
+            <label for="answer-input">ENTER CODE TO CONTINUE</label>
+            <input
+              type="text"
+              id="answer-input"
+              name="answer"
+              autocomplete="off"
+            />
+            <button type="submit">OK</button>
+          </form>
+          <p id="answer-feedback" class="answer-feedback"></p>
+      </div>
+
+      <!-- Password encoding -->
+      <script>
+          const EXPECTED_HASH = 4196251132;   
+          const NEXT_PAGE = "../jumpscare/index.html";  
+        
+         
+          function normalize(text) {
+            return text.trim().toLowerCase();
+          }
+        
+         
+          function simpleHash(str) {
+            let hash = 5381;
+            for (let i = 0; i < str.length; i++) {
+              hash = ((hash << 5) + hash) + str.charCodeAt(i);
+            }
+           
+            return hash >>> 0;
+          }
+        
+          const form = document.getElementById("answer-form");
+          const input = document.getElementById("answer-input");
+          const feedback = document.getElementById("answer-feedback");
+        
+          form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const value = normalize(input.value);
+            const hash = simpleHash(value);
+        
+            if (hash === EXPECTED_HASH) {
+              window.location.href = NEXT_PAGE;
+            } else {
+              feedback.textContent = "Incorrect. Try again.";
+            }
+          });
+        </script>       
+</body>
+</html>
