@@ -4,7 +4,7 @@
   <title>Welcome</title>
       <style>
        
-      
+   <!-- main css code to be used on every page -->   
         body {
             background-color: black;
             color: red;
@@ -25,7 +25,7 @@
             font-size: 1.2rem;
           }
       
-   
+   <!-- Password box style -->
           .answer-container {
             margin-top: 3rem;    
             margin-bottom: 3rem;  
@@ -88,12 +88,13 @@
 
          <div id="x"><br><br><br></div>
       
-        <script>
+        <!-- Encodes the hidden x so it's not obvious what the answer is -->
+       <script>
         const x = atob("Y291bnRpbmc=");
         document.getElementById("x").innerText = x;
         </script>
 
-       <!-- Password box code -->
+       <!-- Password box code  -->
        <div class="answer-container">
           <form id="answer-form">
             <label for="answer-input">ENTER CODE TO CONTINUE</label>
@@ -108,7 +109,7 @@
           <p id="answer-feedback" class="answer-feedback"></p>
       </div>
 
-      <!-- Password encoding -->
+      <!-- Password encoding so the user can't easily see the answer in the source code bc that's lame  -->
       <script>
           const EXPECTED_HASH = 1385985772;   
           const NEXT_PAGE = "movie_fanatic/index.html";  
@@ -132,7 +133,8 @@
           const input = document.getElementById("answer-input");
           const feedback = document.getElementById("answer-feedback");
         
-          form.addEventListener("submit", function (event) {
+       <!-- Advances if password correct -->  
+       form.addEventListener("submit", function (event) {
             event.preventDefault();
             const value = normalize(input.value);
             const hash = simpleHash(value);
