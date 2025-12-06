@@ -79,6 +79,7 @@
 </head>
 <body>
 
+  <!-- Plays videos. Also makes it so the user can't fast forward or pause the video and they can click to the next video -->
   <video id="videoPlayer" autoplay muted playsinline></video>
 
   <div class="arrow" onclick="nextVideo()">≫</div>
@@ -125,7 +126,7 @@
           <p id="answer-feedback" class="answer-feedback"></p>
       </div>
 
-      <!-- Password encoding -->
+      <!-- Password encoding so the user can't easily see the answer in the source code bc that's lame -->
       <script>
           const EXPECTED_HASH = 2090769756;   
           const NEXT_PAGE = "../error/index.html";  
@@ -148,7 +149,8 @@
           const form = document.getElementById("answer-form");
           const input = document.getElementById("answer-input");
           const feedback = document.getElementById("answer-feedback");
-        
+
+        <!-- Advances if password correct -->
           form.addEventListener("submit", function (event) {
             event.preventDefault();
             const value = normalize(input.value);
