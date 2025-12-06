@@ -20,7 +20,7 @@
       box-shadow: 0 0 20px red;
     }
 
-    
+ <!-- Password box style -->   
     .answer-container {
             margin-top: 3rem;    
             margin-bottom: 3rem;  
@@ -77,7 +77,7 @@
           <p id="answer-feedback" class="answer-feedback"></p>
       </div>
 
-      <!-- Password encoding -->
+      <!-- Password encoding so the user can't easily see the answer in the source code bc that's lame  -->
       <script>
           const EXPECTED_HASH = 1075497049;   
           const NEXT_PAGE = "../finale/index.html";  
@@ -100,7 +100,8 @@
           const form = document.getElementById("answer-form");
           const input = document.getElementById("answer-input");
           const feedback = document.getElementById("answer-feedback");
-        
+
+        <!--  Advances if password correct -->
           form.addEventListener("submit", function (event) {
             event.preventDefault();
             const value = normalize(input.value);
