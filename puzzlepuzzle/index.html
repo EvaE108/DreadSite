@@ -28,7 +28,8 @@
       cursor: grab;
     }
 
-     .answer-container {
+<!-- Password box style -->
+    .answer-container {
             margin-top: 3rem;    
             margin-bottom: 3rem;  
             text-align: center;
@@ -67,6 +68,8 @@
   </style>
 </head>
 <body>
+
+  <!-- Puts the pieces onto the screen -->
   <div id="puzzle-container"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
@@ -88,6 +91,8 @@
       container.appendChild(img);
     }
 
+    <!-- Makes the pieces draggable -->
+
     interact('.piece').draggable({
       listeners: {
         move (event) {
@@ -108,7 +113,8 @@
           const currentX = parseFloat(target.getAttribute('data-x')) || 0;
           const currentY = parseFloat(target.getAttribute('data-y')) || 0;
           const snapThreshold = 30;
-
+          
+<!-- Gives the pieces that nice snap when they go together -->
           if (Math.abs(currentX + parseFloat(target.style.left) - correctX) < snapThreshold &&
               Math.abs(currentY + parseFloat(target.style.top) - correctY) < snapThreshold) {
             target.style.left = `${correctX}px`;
@@ -138,7 +144,7 @@
           <p id="answer-feedback" class="answer-feedback"></p>
       </div>
 
-      <!-- Password encoding -->
+      <!-- Password encoding so the user can't easily see the answer in the source code bc that's lame  -->
       <script>
           const EXPECTED_HASH = 4196251132;   
           const NEXT_PAGE = "../jumpscare/index.html";  
@@ -161,7 +167,8 @@
           const form = document.getElementById("answer-form");
           const input = document.getElementById("answer-input");
           const feedback = document.getElementById("answer-feedback");
-        
+
+        <!-- Advances if password correct -->
           form.addEventListener("submit", function (event) {
             event.preventDefault();
             const value = normalize(input.value);
